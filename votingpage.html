@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<title>Polling System</title>
+</head>
+<body>
+  <div class="nav-bar">
+    <div class="heading">
+        <p>port:5500</p>
+    </div>
+    <div class="nav-menu">
+        <li>Admissions</li>
+        <li>Academics</li>
+        <li>Campus Map</li>
+        <li>Student Life</li>
+        <li style="color: red;" id="cu">Contact Us</li>
+    </div>
+</div>
+
+  <div class="container-content">
+    
+  </div>
+  
+  <div class="frame">
+    <div class="frame1">
+      <p style="font-weight: 600; font-size: 21px;">Join the community</p>
+      <p>
+        Be the next winner of the "Beauty Peagent", Join us and learn with fellow professionals to grow alongside
+        them.
+      </p>
+      <img src="img/frame/frame 1.webp">
+    </div>
+
+    <div class="frame1" style="background-color: #141E2A; color: #fff;">
+      <p style="font-weight: 600; font-size: 21px;">Hone your Skills</p>
+      <p>
+        Unlock your full creative potential with lessons ans tutorials
+      </p>
+      <img src="img/frame/frame2.webp">
+    </div>
+
+    <div class="frame1" style="background-color: #C0E8E8;">
+      <p style="font-weight: 600; font-size: 21px;">Join the community</p>
+      <p>
+        Be the next winner of the "Beauty Peagent", Join us and learn with fellow professionals to grow alongside
+        them.
+      </p>
+      <img src="img/frame/frame 1.webp">
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="poll">
+      <h3>Who are you going to choose?</h3>
+      <table id="options">
+        <thead>
+          <tr>
+            <th>Participant</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Shanaya</td>
+            <td><button class="btn" onclick="vote('Shanaya')">Vote</button></td>
+          </tr>
+          <tr>
+            <td>Shreya</td>
+            <td><button class="btn" onclick="vote('Shreya')">Vote</button></td>
+          </tr>
+          <tr>
+            <td>Ayesha</td>
+            <td><button class="btn" onclick="vote('Ayesha')">Vote</button></td>
+          </tr>
+          <tr>
+            <td>Aditi</td>
+            <td><button class="btn" onclick="vote('Aditi')">Vote</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <p id="message"></p>
+      <button id="backBtn" onclick="backToHomePage()" style="display:block;">Back to Home</button>
+      <div id="chartContainer">
+        <canvas id="voteChart"></canvas>
+      </div>
+    </div>
+  </div>
+  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script>
+  let votes = JSON.parse(localStorage.getItem('votes')) || {
+    Shanaya: 0,
+    Shreya: 0,
+    Ayesha: 0, 
+    "Aditi": 0
+  };
+
+  const options = Object.keys(votes);
+  let chart;
+
+  document.addEventListener("DOMContentLoaded", function() {
+    updateChart();
+  });
+
+  function vote(option) {
+    if (confirm(`Are you sure you want to vote for ${option}?`)) {
+      votes[option]++;
+      localStorage.setItem('votes', JSON.stringify(votes));
+      document.getElementById('message').innerText = `You voted for ${option}.`;
+      disableVotingButtons();
+      document.getElementById('backBtn').style.display = 'inline-block';
+      updateChart();
+    }
+  }
+
+  function disableVotingButtons() {
+    const votingButtons = document.querySelectorAll('.btn');
+    votingButtons.forEach(button => {
+      button.disabled = true;
+    });
+  }
+
+  function backToHomePage() {
+    window.location.href = 'index.html';
+  }
+
+  function updateChart() {
+    if (chart) {
+      chart.destroy();
+    }
+    const voteCounts = options.map(option => votes[option]);
+    const ctx = document.getElementById('voteChart').getContext('2d');
+    chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: options,
+        datasets: [{
+          label: 'Votes',
+          data: voteCounts,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+</script>
+
+<div class="footer">
+  <div class="upper-foot">
+      <p>Start Voting</p>
+  </div>
+  <div class="lower-foot">
+      <div class="about-uni">
+          <h2 style=" font-family: 'Geostar Fill', serif;">port:5500</h2>
+          <p>  
+              The university fosters an inclusive community 
+              where academic excellence thrives. 
+              Through events and programs, it cultivates respect, 
+              collaboration, and lifelong learning. Engaging students, 
+              faculty, and staff, it promotes ethical leadership and global 
+              citizenship, preparing individuals for societal impact.
+          </p>
+          <img src="img/facebook.png">
+          <img src="img/youtube.png">
+          <img src="img/insta.png">
+      </div>
+      <div class="list">
+          <h3>Quick Links</h3>
+          <li>About Us</li>
+          <li>Academics</li>
+          <li>Admissions</li>
+          <li>Student Life</li>
+          <li>Research</li>
+          <li>Alumni</li>
+          <li>News & Events</li>
+          <li>Contact Us</li>
+      </div>
+      <div class="list">
+          <h3>Useful Resources</h3>
+          <li>Privacy Policy</li>
+          <li>Terms of Use</li>
+          <li>Accessibility Statement</li>
+          <li>Campus Map</li>
+          <li>Employment Opportunities</li>
+          <li>Emergency Information</li>
+          <li>Copyright Information</li>
+      </div>
+      <div class="list">
+          <h3>Connect with Us</h3>
+          <li>Address</li>
+          <li>Phone</li>
+          <li>Email</li>
+      </div>
+      <div class="list">
+          <h3>Contact Information</h3>
+          <li>Newsletter Signup</li>
+          <li>University Blog</li>
+          <li>Community Forums</li>
+          <li>Virtual Campus Tour</li>
+      </div>
+  </div>
+</div>
+
+
+</body>
+</html>

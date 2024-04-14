@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dokdo&family=Geostar+Fill&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polling System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="poll-container">
+    <div class="poll-content">
+      <h1>port:5500</h1>
+      <p>Define your future</p>
+    </div>
+    <div class="poll">
+      <form id="poll-form">
+        <div class="form-group">
+          <label for="voter-id">Student ID:</label>
+          <input type="text" placeholder="should be 8 charcters long" id="voter-id" maxlength="8" required>
+        </div>
+        <div class="form-group">
+          <label for="name">Student Name:</label>
+          <input type="text" placeholder="name" id="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" placeholder="xyz@gmail.com" id="email" required>
+        </div>
+        <a href="votingpage.html"><button type="submit">Vote</button></a>
+      </form>
+      <div id="message"></div>
+    </div>
+  </div>
+  <script>
+    
+function hasVoted(id, email, name) {
+  const voters = JSON.parse(localStorage.getItem('voters')) || [];
+  return voters.some(voter => voter.id === id && voter.email === email && voter.name === name);
+}
+
+
+function handleSubmit(event) {
+  event.preventDefault();
+
+ 
+  const voterId = document.getElementById('voter-id').value;
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+
+ 
+  if (hasVoted(voterId, email, name)) {
+    document.getElementById('message').innerText = 'You have already voted.';
+    document.getElementById('message').style.color = "#fff";
+    document.getElementById('message').style.display = 'block'; 
+  } else {
+  
+    window.location.href = 'votingpage.html';
+    
+    
+    const voters = JSON.parse(localStorage.getItem('voters')) || [];
+    voters.push({ id: voterId, email, name });
+    localStorage.setItem('voters', JSON.stringify(voters));
+  }
+}
+
+
+document.getElementById('poll-form').addEventListener('submit', handleSubmit);
+  </script>
+</body>
+</html>
